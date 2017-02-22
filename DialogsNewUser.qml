@@ -10,7 +10,12 @@ Dialog {
     width: 640
     height: 480
     id: dialogAddUser
-    objectName: "dialogAddUser"
+    property string textButtom: ""
+    property string name: ""
+    property string vorname: ""
+    property string middlename: ""
+    property string company: ""
+    property string passport: ""
 
     contentItem: Rectangle {
         color: "white"
@@ -22,16 +27,15 @@ Dialog {
                 rowSpacing: 10
 
                 LabelAddUser{text: "Имя "}
-                TextInputStyleUsers {id: name}
+                TextInputStyleUsers {id: name; text: name}
                 LabelAddUser{text: "Фамилия "}
-                TextInputStyleUsers {id: vorname}
+                TextInputStyleUsers {id: vorname; text: vorname}
                 LabelAddUser{text: "Отчество "}
-                TextInputStyleUsers {id: middlename}
+                TextInputStyleUsers {id: middlename; text: middlename}
                 LabelAddUser{text: "Организация "}
-                TextInputStyleUsers {id: company}
+                TextInputStyleUsers {id: company; text: company}
                 LabelAddUser{text: "Паспортные данные "}
-                TextInputStyleUsers {id: passport}
-
+                TextInputStyleUsers {id: passport; text: passport}
 
                 Rectangle {
                     id: divider
@@ -40,7 +44,6 @@ Dialog {
                     Layout.rowSpan: 1
 
                 }
-
 
                 Item {
                     id: addUserButtomGroup
@@ -63,7 +66,7 @@ Dialog {
                                    id: buttonAddUser
                                    anchors.centerIn: parent
                                    anchors.leftMargin: 12
-                                   text: "Добавить"
+                                   text: textButtom
                                    color:  "white"
                                    font.pixelSize: 21
                            }
@@ -72,15 +75,11 @@ Dialog {
                                 anchors.fill: parent
                                 onClicked: {
                                     usersModel.insertUser(name.text, vorname.text, middlename.text, company.text, passport.text)
-                                    dialogAddUser.close()
                                 }
 
                            }
 
                         }
-
-
-
                         Rectangle {
                            anchors.left: buttonAddUserRect.right
                            anchors.margins: 10

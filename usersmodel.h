@@ -27,7 +27,7 @@ public:
     };
 
     QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const;
-
+    QStringList getData(int row);
 
 
 protected:

@@ -190,7 +190,7 @@ Window {
                     MenuItem {
                        text: qsTr("Редактировать")
                        onTriggered: {
-                            console.log(usersModel.data(usersModel.index(tableUsers.currentRow, 2), 103))
+                            console.log(usersModel.data(usersModel.index(tableUsers.currentRow, 2), usersModel.))
                             updateUserDialog.open()
                        }
                     }

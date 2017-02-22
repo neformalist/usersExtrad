@@ -18,6 +18,11 @@ QVariant UsersModel::data(const QModelIndex &index, int role) const
     return QSqlQueryModel::data(modelIndex, Qt::DisplayRole);
 }
 
+QStringList UsersModel::getData(int row)
+{
+    this->data(this->index(row, 0), IdRole).toInt();
+}
+
 QHash<int, QByteArray> UsersModel::roleNames() const
 {
     QHash<int, QByteArray> roles;
