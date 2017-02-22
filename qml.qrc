@@ -1,0 +1,18 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>Gradients.qml</file>
+        <file>DialogsNewUser.qml</file>
+        <file>TextInputStyleUsers.qml</file>
+        <file>LabelAddUser.qml</file>
+        <file>icons/Add.png</file>
+        <file>icons/tab0.png</file>
+        <file>icons/tab1.png</file>
+        <file>icons/tab2.png</file>
+        <file>icons/tab3.png</file>
+        <file>icons/Zoom.png</file>
+        <file>MessageDialogs.qml</file>
+        <file>MessageDialogDelete.qml</file>
+        <file>TableUsers.qml</file>
+    </qresource>
+</RCC>
