@@ -18,10 +18,29 @@ QVariant UsersModel::data(const QModelIndex &index, int role) const
     return QSqlQueryModel::data(modelIndex, Qt::DisplayRole);
 }
 
-QStringList UsersModel::getData(int row)
+QVariantMap UsersModel::get(int idx) const
 {
-    this->data(this->index(row, 0), IdRole).toInt();
+    QVariantMap map;
+    foreach (int k, roleNames().keys()) {
+        map[roleNames().value(k)] = data(index(idx,0), k);
+    }
+    return map;
 }
+
+QStringList UsersModel::fillComboBox() const
+{
+    QSqlQuery query(this->_db);
+    QString queryStr = "SELECT name, vorname, middlename, company FROM " USERTABLE "";
+    query.exec(queryStr);
+
+    QStringList result;
+    while (query.next())
+    result.append(QString(query.value(0).toString()+" "+query.value(1).toString()+" "+query.value(2).toString()+"<br>"+query.value(3).toString()));
+
+    return result;
+}
+
+
 
 QHash<int, QByteArray> UsersModel::roleNames() const
 {
@@ -63,6 +82,23 @@ bool UsersModel::validateInsertUser(QString name, QString company) const
     return true;
 }
 
+bool UsersModel::update(int id, QString name, QString vorname, QString middlename, QString company, QString passport)
+{
+    QSqlQuery query(this->_db);
+    QString queryStr = QString("UPDATE " USERTABLE " SET name = '%1', vorname = '%2', middlename = '%3', company = '%4', passport = '%5' WHERE id = %6 ")
+            .arg(name).arg(vorname).arg(middlename).arg(company).arg(passport).arg(id);
+
+    if(query.exec(queryStr))
+    {
+        this->updateModel();
+        return true;
+    }else
+    {
+        qDebug() << query.lastError();
+        return false;
+    }
+}
+
 bool UsersModel::removeRecord(const int id)
 {
     QSqlQuery query(this->_db);
@@ -96,6 +132,25 @@ bool UsersModel::insertUser(QString name, QString vorname, QString middlename, Q
     if(this->insert(name, vorname, middlename, company, passport))
     {
         emit successInsertingToDb();
+        return true;
+    }else
+    {
+        emit errorInsertingToDb();
+        return false;
+    }
+}
+
+bool UsersModel::updateUser(int id, QString name, QString vorname, QString middlename, QString company, QString passport)
+{
+    if(!this->validateInsertUser(name, company))
+    {
+        emit notValidateUpdate();
+        return false;
+    }
+
+    if(this->update(id, name, vorname, middlename, company, passport))
+    {
+        emit successUpdateToDb();
         return true;
     }else
     {

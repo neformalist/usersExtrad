@@ -6,16 +6,25 @@ import QtQuick.Controls 1.4
 
 Dialog {
     visible: false
-    title: "Новый пользователь"
     width: 640
     height: 480
     id: dialogAddUser
+
+    property int typeCall: 0
     property string textButtom: ""
-    property string name: ""
-    property string vorname: ""
-    property string middlename: ""
-    property string company: ""
-    property string passport: ""
+    property string nameText: ""
+    property string vornameText: ""
+    property string middlenameText: ""
+    property string companyText: ""
+    property string passportText: ""
+
+    function fillField(){
+        name.text = nameText;
+        vorname.text = vornameText
+        middlename.text = middlenameText
+        company.text = companyText
+        passport.text = passportText
+    }
 
     contentItem: Rectangle {
         color: "white"
@@ -27,15 +36,15 @@ Dialog {
                 rowSpacing: 10
 
                 LabelAddUser{text: "Имя "}
-                TextInputStyleUsers {id: name; text: name}
+                TextInputStyleUsers {id: name; text: nameText}
                 LabelAddUser{text: "Фамилия "}
-                TextInputStyleUsers {id: vorname; text: vorname}
+                TextInputStyleUsers {id: vorname; text: vornameText}
                 LabelAddUser{text: "Отчество "}
-                TextInputStyleUsers {id: middlename; text: middlename}
+                TextInputStyleUsers {id: middlename; text: middlenameText}
                 LabelAddUser{text: "Организация "}
-                TextInputStyleUsers {id: company; text: company}
+                TextInputStyleUsers {id: company; text: companyText}
                 LabelAddUser{text: "Паспортные данные "}
-                TextInputStyleUsers {id: passport; text: passport}
+                TextInputStyleUsers {id: passport; text: passportText}
 
                 Rectangle {
                     id: divider
@@ -74,8 +83,13 @@ Dialog {
                                 id: buttonAddUserMouseArea
                                 anchors.fill: parent
                                 onClicked: {
+                                    if(typeCall == 1)
                                     usersModel.insertUser(name.text, vorname.text, middlename.text, company.text, passport.text)
-                                }
+                                    if(typeCall == 2){
+                                    usersModel.updateUser(usersModel.getID(tableUsers.currentRow),name.text, vorname.text, middlename.text, company.text, passport.text )
+
+                                    }
+                                  }
 
                            }
 

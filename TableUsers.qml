@@ -5,9 +5,10 @@ import QtQuick.Window 2.2
 
 TableView {
    id: tableUsers
-   anchors.fill: parent
+   anchors.fill : parent
    anchors.topMargin: addNewUseButtom.height +10
    signal successInsertUser()
+   signal successUpdateUser()
 
    TableViewColumn {
     id:nameUserfromTable
@@ -82,7 +83,7 @@ TableView {
 
                      switch(mouse.button) {
                      case Qt.RightButton:
-                         contextMenuDeleteUser.popup() // Вызываем контексткное меню
+                         contextMenuUser.popup() // Вызываем контексткное меню
                          break
                      default:
                          break
@@ -140,6 +141,20 @@ TableView {
         insertUser.colorButtom = "#D9534F"
         insertUser.open()
     }
+    onSuccessUpdateToDb : {
+        updateUser.textValue = "Пользователь успешно изменен"
+        updateUser.title = "Данные успешно изменены"
+        updateUser.colorButtom = "#5CB85C"
+        successUpdateUser()
+        updateUser.open()
+    }
+    onNotValidateUpdate : {
+        updateUser.textValue = "Поля <b>имя</b> или <b>организация</b> не должны быть пустыми"
+        updateUser.title = "Ошибка"
+        updateUser.colorButtom = "#D9534F"
+        updateUser.open()
+    }
+
     onSuccessDeleteUser: {
         deleteUserMessage.textValue = "Пользователь успешно удален"
         deleteUserMessage.title = "Пользователь успешно удален"

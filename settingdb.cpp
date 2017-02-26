@@ -15,18 +15,18 @@ void settingDB::setDbSetting()
 {
     QMap<QString, QString> map;
     map[name] = "MUZLIB";
-    map[hostname] = "RSMC-MUZLIB-S\\MUZLIB";
+    map[hostname] = "LOCALHOST\\SQLEXPRESS";
     map[dbname] = "muzlib";
-    map[username] = "muz1";
-    map[password] = "123";
+    map[username] = "";
+    map[password] = "";
 
     this->SetDB.push_back(map);
 
     map[name] = "USERS";
-    map[hostname] = "RSMC-MUZLIB-S\\MUZLIB";
+    map[hostname] = "LOCALHOST\\SQLEXPRESS";
     map[dbname] = "users";
-    map[username] = "muz1";
-    map[password] = "123";
+    map[username] = "";
+    map[password] = "";
 
     this->SetDB.push_back(map);
 }

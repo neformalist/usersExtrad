@@ -3,6 +3,7 @@ import QtQuick.Window 2.2
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.3
+import "menu"
 
 Window {
     visible: true
@@ -119,8 +120,199 @@ Window {
             }
         }
         Tab {
+            id: newExtrad
             title: "Новая выдача"
             Rectangle {
+                id: tabExtrad
+                anchors.fill: parent
+
+                RowLayout {
+                    spacing: Math.max(Window.width/40)
+                    anchors.fill: parent
+                    anchors.margins: Math.max(Window.width/40)
+
+                   ColumnLayout{
+                       //anchors.fill: parent
+                       //Layout.fillWidth: true
+                      // Layout.fillHeight: true
+                       anchors.top: parent.top
+                       RowLayout {
+                            id: firstGrid
+                            anchors.top: parent.top
+                            spacing: 10
+                            LabelAddUser{text: "Выберите пользователя "; color: "#777777"}
+                            Rectangle {
+                                width: 140
+                                height: 50
+                                color: addUserButtom.pressed ? Qt.darker("#5CB85C", 1.3) : "#5CB85C"
+                                radius: 4
+                                Text {
+                                    text: userNameMain.text.length == 0 ? qsTr("Добавить") : qsTr("Заменить")
+                                    color: "white"
+                                    anchors.centerIn: parent
+                                }
+                                MouseArea {
+                                    id: addUserButtom
+                                    anchors.fill: parent
+                                    onClicked: {
+                                       dialogAddUser.open()
+                                    }
+                                }
+                            }
+                            Rectangle {
+                                visible: userNameMain.text.length > 0 ? true : false
+                                width: 140
+                                height: 50
+                                color: addUserButtomClear.pressed ? Qt.darker("#D9534F", 1.3) : "#D9534F"
+                                radius: 4
+                                Text {
+                                    text: qsTr("Очистить")
+                                    color: "white"
+                                    anchors.centerIn: parent
+                                }
+                                MouseArea {
+                                    id: addUserButtomClear
+                                    anchors.fill: parent
+                                    onClicked: {
+                                       userNameMain.text = ""
+                                       userCompanyMain.text = ""
+                                    }
+                                }
+                            }
+                        }
+                       Rectangle {
+                        id: nameUserPanel
+                        implicitHeight: columnUserData.implicitHeight+10
+                        Layout.fillWidth: true
+                        //Layout.fillHeight: true
+                        //border.color: "black"
+                        ColumnLayout {
+                               id : columnUserData
+                               anchors.top: parent.top
+                               anchors.left: parent.left
+                               anchors.topMargin: 10
+                               anchors.leftMargin: 10
+                               spacing: 10
+                               Row {
+                                spacing: 10
+                                Rectangle {
+                                width: 50
+                                height: userNameMain.text.length > 0 ? textNameUser.height : 0
+                                Text{id: textNameUser; text: "ФИО "; color: "#777777"; visible: (userNameMain.text.length > 0) ? true : false; padding: 5}
+                                }
+                                Rectangle {
+                                x: 50
+                                radius: 2
+                                width: userNameMain.width > userNameMain.implicitWidth ? userNameMain.implicitWidth : userNameMain.width
+                                height: userNameMain.text.length > 0 ? userNameMain.height : 0
+                                border.color: userNameMain.text.length > 0 ? "#aaaaaa" : "transparent"
+                                Text {id: userNameMain; wrapMode: Text.WordWrap; width: 250; padding: 5}
+                                }
+
+                               }
+                               Row {
+                                spacing: 10
+                                Rectangle {
+                                    width: 130
+                                    height: userNameMain.text.length > 0 ? userCompanyMain.height : 0
+                                    Text{text: "Организация ";  color: "#777777"; visible: (userNameMain.text.length > 0) ? true : false; padding: 5}
+                                }
+                                Rectangle {
+                                    radius: 2
+                                    border.color: userNameMain.text.length > 0 ? "#aaaaaa" : "transparent"
+                                    width: userCompanyMain.width > userCompanyMain.implicitWidth ? userCompanyMain.implicitWidth : userCompanyMain.width
+                                    height: userNameMain.text.length > 0 ? userCompanyMain.height : 0
+                                    Text {id: userCompanyMain;  wrapMode: Text.WordWrap; width: 200; padding: 5}
+                                }
+                               }
+                            }
+                        }
+                       GridLayout{
+                           Layout.fillHeight: true
+                           Layout.fillWidth: true
+
+                           columns: 2
+                           LabelAddUser{text: "Примечания "; color: "#777777"}
+                           Rectangle{
+                            clip: true
+                            Layout.fillWidth: true
+                            height: 150
+                            border.width: noteTextEdit.focus ? 2 : 1
+                            border.color: noteTextEdit.focus ? "steelblue" : "#aaaaaa"
+                            TextEdit {id: noteTextEdit; anchors.fill:parent; color: "#333333"; wrapMode: TextEdit.WordWrap; textMargin: 5; selectByMouse : true}
+                           }
+                           LabelAddUser{text: "Комментарии "; color: "#777777"}
+                           Rectangle{
+                            clip: true
+                            Layout.fillWidth: true
+                            height: 150
+                            border.width: commentTextEdit.focus ? 2 : 1
+                            border.color: commentTextEdit.focus ? "steelblue" : "#aaaaaa"
+                            TextEdit {id: commentTextEdit; anchors.fill:parent; color: "#333333"; wrapMode: TextEdit.WordWrap; textMargin: 5; selectByMouse : true}
+                           }
+
+                       }
+                    }
+
+
+
+                   DialogAddUser {id: dialogAddUser; title: "Выберите пользователь"}
+
+                    Rectangle {
+                        Layout.fillHeight: true
+                        id: secondGrid
+                        Layout.fillWidth: true
+                        width: tabExtrad.width
+                        implicitHeight: parent.height
+                        border.color: "black"
+                        clip: true
+                        RowLayout {
+                            //Layout.fillWidth: true
+                            //width: parent.width
+                            anchors.top: parent.top
+                            anchors.left: parent.left
+                            //anchors.right: parent.right
+                            anchors.topMargin: 10
+                            anchors.leftMargin: 10
+                            anchors.rightMargin: 10
+                            spacing: 10
+                            LabelAddUser{text: "Введите шифр "}
+                            TextInputStyleUsers {id: addCodeInput; widthValue: 150}
+                            Rectangle {
+                                radius: 4
+                                implicitWidth: 150
+                                height: 50
+                                color: "#5CB85C"
+                                Text{text: "Добавить"; anchors.centerIn: parent; color: "white"}
+                                MouseArea {
+                                    anchors.fill: parent
+                                    onClicked: {
+
+                                    }
+                                }
+                            }
+                        }
+                        TableView{
+                            anchors.fill: secondGrid
+                            anchors.topMargin: 70
+                            id: tableAddCode
+                            TableViewColumn{title: "Шифр"}
+                            TableViewColumn{title: "Фамилия автора"}
+                            TableViewColumn{title: "Имя автора"}
+                            TableViewColumn{title: "Название произведения"}
+                            TableViewColumn{title: "Материал"}
+                            TableViewColumn{title: "-------"}
+                            TableViewColumn{title: "------"}
+                            TableViewColumn{title: "-----"}
+                            TableViewColumn{title: "-------"}
+                            TableViewColumn{title: "-------"}
+                        }
+                    }
+
+
+
+                }
+
             }
         }
         Tab {
@@ -168,56 +360,34 @@ Window {
                 }
                 TableUsers{id : tableUsers}
                 MessageDialogs{id: insertUser}
+                MessageDialogs{id: updateUser}
                 MessageDialogDelete {id: deleteUser}
                 MessageDialogs{id: deleteUserMessage}
+                DialogsNewUser {
+                    id: updateUserDialog
+                    textButtom: "Изменить"
+                    title: "Изенить пользователя"
+                    typeCall: 2
+                }
+                DialogsNewUser {
+                    id: newUserDialog
+                    title: "Новый пользователь"
+                    textButtom: "Добавить"
+                    typeCall: 1
+                }
+
                 Connections {
                     target: tableUsers
                     onSuccessInsertUser: {
                         newUserDialog.clearField()
-                        newUserDialog.close()
+                        newUserDialog.close()  
                     }
-                }
-                Menu {
-                id: contextMenuDeleteUser
-                    MenuItem {
-                        text: qsTr("Удалить")
-                        onTriggered: {
-                                deleteUser.objectName = "deleteUser"
-                                deleteUser.textValue = "Вы действительно хотите удалить пользователя?"
-                                deleteUser.open()
-                        }
-                    }
-                    MenuItem {
-                       text: qsTr("Редактировать")
-                       onTriggered: {
-                            console.log(usersModel.data(usersModel.index(tableUsers.currentRow, 2), 103))
-                            updateUserDialog.open()
-                       }
-                    }
-                style: MenuStyle {
-
-                    frame: Rectangle {
-                       color: "#fff"
-                        border.width: 2
-                        radius: 5
-                      }
-                    itemDelegate.label: Text {
-                        verticalAlignment: Text.AlignVCenter
-                        horizontalAlignment: Text.AlignHCenter
-                        font.pointSize: 8
-                        color: styleData.selected ? "white" : "black"
-                        text: styleData.text
-                      }
-
-                   itemDelegate.background: Rectangle {
-                        width: 500
-                        height: 300
-                        radius: 2
-                        color: styleData.selected ? "darkGray" : "transparent"
-                     }
+                    onSuccessUpdateUser : {
+                        updateUserDialog.close()
                     }
 
                 }
+                MenuUsers{id: contextMenuUser}
             }
         }
         Tab {
@@ -282,14 +452,7 @@ Window {
                 author: "Frederik"
             }
         }
-        DialogsNewUser {
-            id: newUserDialog
-            textButtom: "Добавить"
-        }
-        DialogsNewUser {
-            id: updateUserDialog
-            textButtom: "Изменить"
-        }
+
 
     }
 }

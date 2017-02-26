@@ -15,11 +15,12 @@ Dialog {
         anchors.fill: parent
         Rectangle {
         Layout.fillHeight: true
-        Layout.preferredWidth: parent.width
+        Layout.preferredWidth: parent.width-40
+        Layout.margins: 20
         color: "white"
         clip: true
         Text {
-            width: messageDialog.width
+            width: parent.width-40
             horizontalAlignment:Text.AlignHCenter
             color: "steelblue"
             anchors.centerIn: parent
@@ -30,14 +31,15 @@ Dialog {
         }
         Rectangle {
           color: messageDialogAddUser.pressed ? Qt.darker(colorButtom, 1.3) : colorButtom
-          radius: 4
+          radius: 6
           Layout.alignment: Qt.AlignBottom
-          Layout.preferredWidth: parent.width
-          Layout.preferredHeight: 60
+          Layout.preferredWidth: messageDialog.width-40
+          Layout.preferredHeight: 40
+          Layout.margins: 20
           Text {
               color: "white"
               anchors.centerIn: parent
-              text: qsTr("ОKEY")
+              text: qsTr("OK")
           }
           MouseArea {
             id: messageDialogAddUser

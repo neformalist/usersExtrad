@@ -14,5 +14,11 @@
         <file>MessageDialogs.qml</file>
         <file>MessageDialogDelete.qml</file>
         <file>TableUsers.qml</file>
+        <file>icons/delete.png</file>
+        <file>icons/edit.png</file>
+        <file>menu/MenuUsers.qml</file>
+        <file>icons/logo.png</file>
+        <file>DialogAddUser.qml</file>
+        <file>icons/AddUser.png</file>
     </qresource>
 </RCC>
