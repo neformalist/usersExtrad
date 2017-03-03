@@ -44,6 +44,7 @@ Dialog {
                     onExited: {cursorShape = Qt.ArrowCursor}
                     onClicked: {
                           userNameMain.text = usersModel.get(list_view1.currentIndex).name + " " + usersModel.get(list_view1.currentIndex).vorname + " " + usersModel.get(list_view1.currentIndex).middlename
+                          userNameMain.idUser = usersModel.get(list_view1.currentIndex).id
                           userCompanyMain.text = usersModel.get(list_view1.currentIndex).company
                           dialogAddUserToMain.close()
                     }

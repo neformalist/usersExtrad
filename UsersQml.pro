@@ -6,7 +6,10 @@ CONFIG += c++11
 SOURCES += main.cpp \
     DBCore.cpp \
     usersmodel.cpp \
-    settingdb.cpp
+    settingdb.cpp \
+    codemodel.cpp \
+    codemodel1.cpp \
+    mainsqlquery.cpp
 
 RESOURCES += qml.qrc
 
@@ -35,4 +38,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     DBCore.h \
     usersmodel.h \
-    settingdb.h
+    settingdb.h \
+    codemodel.h \
+    codemodel1.h \
+    mainsqlquery.h

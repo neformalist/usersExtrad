@@ -20,5 +20,6 @@
         <file>icons/logo.png</file>
         <file>DialogAddUser.qml</file>
         <file>icons/AddUser.png</file>
+        <file>TextEditCustom.qml</file>
     </qresource>
 </RCC>

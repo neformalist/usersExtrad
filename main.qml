@@ -136,6 +136,7 @@ Window {
                        //Layout.fillWidth: true
                       // Layout.fillHeight: true
                        anchors.top: parent.top
+                       spacing: 20
                        RowLayout {
                             id: firstGrid
                             anchors.top: parent.top
@@ -202,11 +203,11 @@ Window {
                                 }
                                 Rectangle {
                                 x: 50
-                                radius: 2
-                                width: userNameMain.width > userNameMain.implicitWidth ? userNameMain.implicitWidth : userNameMain.width
+                                radius: 10
+                                width: userNameMain.width > userNameMain.implicitWidth ? userNameMain.implicitWidth+10 : userNameMain.width+10
                                 height: userNameMain.text.length > 0 ? userNameMain.height : 0
                                 border.color: userNameMain.text.length > 0 ? "#aaaaaa" : "transparent"
-                                Text {id: userNameMain; wrapMode: Text.WordWrap; width: 250; padding: 5}
+                                Text {property int idUser: null; id: userNameMain; wrapMode: Text.WordWrap; width: 250; padding: 5; leftPadding: 10}
                                 }
 
                                }
@@ -218,11 +219,11 @@ Window {
                                     Text{text: "Организация ";  color: "#777777"; visible: (userNameMain.text.length > 0) ? true : false; padding: 5}
                                 }
                                 Rectangle {
-                                    radius: 2
+                                    radius: 10
                                     border.color: userNameMain.text.length > 0 ? "#aaaaaa" : "transparent"
-                                    width: userCompanyMain.width > userCompanyMain.implicitWidth ? userCompanyMain.implicitWidth : userCompanyMain.width
+                                    width: userCompanyMain.width > userCompanyMain.implicitWidth ? userCompanyMain.implicitWidth+10 : userCompanyMain.width+10
                                     height: userNameMain.text.length > 0 ? userCompanyMain.height : 0
-                                    Text {id: userCompanyMain;  wrapMode: Text.WordWrap; width: 200; padding: 5}
+                                    Text {id: userCompanyMain;  wrapMode: Text.WordWrap; width: 200; padding: 5; leftPadding: 10}
                                 }
                                }
                             }
@@ -234,21 +235,23 @@ Window {
                            columns: 2
                            LabelAddUser{text: "Примечания "; color: "#777777"}
                            Rectangle{
+                            radius: 10
                             clip: true
                             Layout.fillWidth: true
                             height: 150
                             border.width: noteTextEdit.focus ? 2 : 1
                             border.color: noteTextEdit.focus ? "steelblue" : "#aaaaaa"
-                            TextEdit {id: noteTextEdit; anchors.fill:parent; color: "#333333"; wrapMode: TextEdit.WordWrap; textMargin: 5; selectByMouse : true}
+                            TextEdit {id: noteTextEdit; anchors.fill:parent; color: "#333333"; wrapMode: TextEdit.WordWrap; textMargin: 5; selectByMouse : true; selectionColor: "#FF7300"}
                            }
                            LabelAddUser{text: "Комментарии "; color: "#777777"}
                            Rectangle{
+                            radius: 10
                             clip: true
                             Layout.fillWidth: true
                             height: 150
                             border.width: commentTextEdit.focus ? 2 : 1
                             border.color: commentTextEdit.focus ? "steelblue" : "#aaaaaa"
-                            TextEdit {id: commentTextEdit; anchors.fill:parent; color: "#333333"; wrapMode: TextEdit.WordWrap; textMargin: 5; selectByMouse : true}
+                            TextEdit {id: commentTextEdit; anchors.fill:parent; color: "#333333"; wrapMode: TextEdit.WordWrap; textMargin: 5; selectByMouse : true; selectionColor: "#FF7300"}
                            }
 
                        }
@@ -282,31 +285,91 @@ Window {
                                 radius: 4
                                 implicitWidth: 150
                                 height: 50
-                                color: "#5CB85C"
+                                color: editionsListAddMouseArea.pressed ? Qt.darker("#5CB85C", 1.3) : "#5CB85C"
                                 Text{text: "Добавить"; anchors.centerIn: parent; color: "white"}
                                 MouseArea {
+                                    id: editionsListAddMouseArea
                                     anchors.fill: parent
                                     onClicked: {
-
+                                        codemodel.find(addCodeInput.text)
+                                        if(!codemodel.get().Code) editionNotFound.open();
+                                        else mainModel.add({"code":codemodel.get().Code, "firstZagl": codemodel.get().FirstZagl, "LName": codemodel.get().LName, "FName": codemodel.get().FName, "MInitial": codemodel.get().MInitial})
                                     }
                                 }
                             }
                         }
-                        TableView{
+                        ListView{
                             anchors.fill: secondGrid
+                            spacing: 30
+                            anchors.margins: 15
                             anchors.topMargin: 70
-                            id: tableAddCode
-                            TableViewColumn{title: "Шифр"}
-                            TableViewColumn{title: "Фамилия автора"}
-                            TableViewColumn{title: "Имя автора"}
-                            TableViewColumn{title: "Название произведения"}
-                            TableViewColumn{title: "Материал"}
-                            TableViewColumn{title: "-------"}
-                            TableViewColumn{title: "------"}
-                            TableViewColumn{title: "-----"}
-                            TableViewColumn{title: "-------"}
-                            TableViewColumn{title: "-------"}
+                            clip: true
+                            id: listAddCode
+                            model: mainModel
+                            delegate: Component  {
+                                Rectangle {
+                                    implicitWidth: listAddCode.width
+                                    implicitHeight: itemCodeColumn.implicitHeight + 20
+                                    radius: 10
+                                    color: "#E6F0FB"
+                                    border.color: "#777777"
+                                    Text {
+                                        anchors.left: parent.left
+                                        anchors.leftMargin: 5
+                                        text: index+1
+                                        color: "#aaaaaa"
+                                        height: itemCodeColumn.implicitHeight + 20
+                                        verticalAlignment: Qt.AlignVCenter
+                                        font.pixelSize: (index<9) ? itemCodeColumn.implicitHeight : itemCodeColumn.implicitHeight/1.5
+                                    }
+
+                                    ColumnLayout {
+                                        anchors.fill: parent
+                                        anchors.margins: 10
+                                        anchors.rightMargin: 50
+                                        anchors.leftMargin: 70
+                                        id: itemCodeColumn
+                                        spacing: 15
+                                        GridLayout{
+                                            columns: 5
+                                            columnSpacing: 10
+                                            LabelAddUser{text: "ШИФР"}
+                                            TextInputStyleUsers {text: code; widthValue: 150; readOnly: true}
+                                            LabelAddUser{text: ""}
+                                            LabelAddUser{text: "АВТОР"}
+                                            TextInputStyleUsers {text: LName + " " + FName + " " + MInitial}
+                                         }
+                                        GridLayout {
+                                            columns: 2
+                                            LabelAddUser{text: "НАЗВАНИЕ"}
+                                            TextInputStyleUsers {text: firstZagl;}
+                                        }
+                                    }
+                                    Image {
+                                        id: asdsdf
+                                        source: "icons/delete.png"
+                                        width: 24
+                                        height: 24
+                                        anchors.right: parent.right
+                                        anchors.top: parent.top
+                                        anchors.rightMargin: 10
+                                        anchors.topMargin: 5
+                                        MouseArea {
+                                            anchors.fill: parent
+                                            hoverEnabled: true
+                                            onEntered: {cursorShape = Qt.PointingHandCursor}
+                                            onExited: {cursorShape = Qt.ArrowCursor}
+                                            onClicked: {
+                                                mainModel.remove(index)
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
+
+                        ListModel {id: editionsList}
+                        MessageDialogs{id: editionNotFound; textValue: "Шифр не найден"; colorButtom: "#D9534F"}
                     }
 
 
@@ -361,6 +424,7 @@ Window {
                 TableUsers{id : tableUsers}
                 MessageDialogs{id: insertUser}
                 MessageDialogs{id: updateUser}
+
                 MessageDialogDelete {id: deleteUser}
                 MessageDialogs{id: deleteUserMessage}
                 DialogsNewUser {
@@ -424,7 +488,7 @@ Window {
                             anchors.leftMargin: 10
                             text: styleData.title
                             font.pixelSize: Window.height/50
-                            color: styleData.selected ? "white" : "black"
+                            color: styleData.selected ? "white" : "#001A33"
                         }
                     }
 
